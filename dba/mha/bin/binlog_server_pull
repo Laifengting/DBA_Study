@@ -1,0 +1,1 @@
+mysqlbinlog  -R --host=192.168.80.88 --port=3306 --user=mha --password='Lft123456~' --raw  --stop-never mysql-bin.000001 &

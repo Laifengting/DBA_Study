@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat = "http://io.mycat/">
+    <!-- 默认没有分表的走 sh1 -->
+    <schema name = "TESTDB"
+            checkSQLschema = "false"
+            sqlMaxLimit = "100"
+            dataNode = "sh1">
+        <!-- 垂直分表 -->
+        <table name = "customers"
+               dataNode = "sh1"/>
+        <table name = "products"
+               dataNode = "sh2"/>
+        <!-- 水平分表 -->
+        <table name = "orders"
+               dataNode = "sh1,sh2"
+               rule = "auto-sharding-rang-mod"/>
+    </schema>
+    <!-- 数据节点 -->
+    <dataNode name = "sh1"
+              dataHost = "node79"
+              database = "bzbh"/>
+    <dataNode name = "sh2"
+              dataHost = "node80"
+              database = "bzbh"/>
+    <!-- 数据主机1 -->
+    <dataHost name = "node79"
+              maxCon = "1000"
+              minCon = "10"
+              balance = "1"
+              writeType = "0"
+              dbType = "mysql"
+              dbDriver = "native"
+              switchType = "1">
+        <!-- 心跳检测 -->
+        <heartbeat>select user()</heartbeat>
+        <!-- 高可用读写分离1 -->
+        <writeHost host = "db1"
+                   url = "192.168.80.81:3307"
+                   user = "root"
+                   password = "123">
+            <readHost host = "db2"
+                      url = "192.168.80.81:3309"
+                      user = "root"
+                      password = "123"/>
+        </writeHost>
+        <!-- 高可用读写分离1 -->
+        <writeHost host = "db3"
+                   url = "192.168.80.82:3307"
+                   user = "root"
+                   password = "123">
+            <readHost host = "db4"
+                      url = "192.168.80.82:3309"
+                      user = "root"
+                      password = "123"/>
+        </writeHost>
+    </dataHost>
+    <!-- 数据主机2 -->
+    <dataHost name = "node80"
+              maxCon = "1000"
+              minCon = "10"
+              balance = "1"
+              writeType = "0"
+              dbType = "mysql"
+              dbDriver = "native"
+              switchType = "1">
+        <!-- 心跳检测 -->
+        <heartbeat>select user()</heartbeat>
+        <!-- 高可用读写分离1 -->
+        <writeHost host = "db1"
+                   url = "192.168.80.81:3308"
+                   user = "root"
+                   password = "123">
+            <readHost host = "db2"
+                      url = "192.168.80.81:3310"
+                      user = "root"
+                      password = "123"/>
+        </writeHost>
+        <!-- 高可用读写分离2 -->
+        <writeHost host = "db3"
+                   url = "192.168.80.82:3308"
+                   user = "root"
+                   password = "123">
+            <readHost host = "db4"
+                      url = "192.168.80.82:3310"
+                      user = "root"
+                      password = "123"/>
+        </writeHost>
+    </dataHost>
+</mycat:schema>

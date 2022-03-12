@@ -1,0 +1,1 @@
+masterha_check_ssh --conf=/etc/mha/app1.cnf

@@ -1,0 +1,1 @@
+masterha_stop --conf=/etc/mha/app1.cnf

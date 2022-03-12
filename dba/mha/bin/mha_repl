@@ -1,0 +1,1 @@
+masterha_check_repl --conf=/etc/mha/app1.cnf

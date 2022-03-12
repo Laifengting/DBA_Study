@@ -1,0 +1,3 @@
+BJ=0
+SH=1
+DEFAULT_NODE=0

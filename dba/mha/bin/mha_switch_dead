@@ -1,0 +1,1 @@
+masterha_master_switch --master_state=dead --conf=/etc/mha/app1.conf --dead_master_host=$1 --dead_master_port=3306 --new_master_host=$2 --new_master_port=3306 --ignore_last_failover
