@@ -1,0 +1,31 @@
+cat >/etc/systemd/system/mysqld3307.service<<EOF
+[Unit]
+Description=MySQL Server
+Documentation=man:mysqld(8)
+Documentation=http://dev.mysql.com/doc/refman/en/using-systemd.html
+After=network.target
+After=syslog.target
+[Install]
+WantedBy=multi-user.target
+[Service]
+User=mysql
+Group=mysql
+ExecStart=/usr/local/mysql/bin/mysqld --defaults-file=/mdata/3307/my.cnf
+LimitNOFILE = 5000
+EOF
+
+cat >/etc/systemd/system/mysqld3308.service<<EOF
+[Unit]
+Description=MySQL Server
+Documentation=man:mysqld(8)
+Documentation=http://dev.mysql.com/doc/refman/en/using-systemd.html
+After=network.target
+After=syslog.target
+[Install]
+WantedBy=multi-user.target
+[Service]
+User=mysql
+Group=mysql
+ExecStart=/usr/local/mysql80/bin/mysqld --defaults-file=/mdata/3308/my.cnf
+LimitNOFILE = 5000
+EOF

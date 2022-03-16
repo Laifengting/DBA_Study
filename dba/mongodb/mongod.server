@@ -1,0 +1,49 @@
+#!/bin/sh
+PATH="/sbin:/usr/sbin:/bin:/usr/bin:$basedir/bin"
+export PATH
+
+mode=$1    # start or stop
+
+[ $# -ge 1 ] && shift
+
+case "$mode" in
+  'start')
+    echo "Starting MongoDB"
+    if test -x /usr/local/mongodb/bin/mongod
+    then
+      /usr/local/mongodb/bin/mongod -f /mdata/mongodb/conf/mongod.conf
+      exit
+    else
+      echo "Couldn't find MongoDB server ($bindir/mongod)"
+    fi
+    ;;
+
+  'stop')
+	echo "Shutting down MongoDB"
+    if test -x /usr/local/mongodb/bin/mongod
+    then
+      /usr/local/mongodb/bin/mongod -f /mdata/mongodb/conf/mongod.conf --shutdown
+      exit
+    else
+      echo "MongoDB PID file could not be found!"
+    fi
+    ;;
+
+  'restart')
+    if $0 stop; then
+      $0 start
+    else
+      echo "Failed to stop running server, so refusing to try to start."
+      exit 1
+    fi
+    ;;
+
+    *)
+      # usage
+      basename=`basename "$0"`
+      echo "Usage: $basename  {start|stop|restart}  [ MongoDB options ]"
+      exit 1
+    ;;
+esac
+
+exit 0

@@ -262,9 +262,9 @@ SELECT `t`.`name`,
        `t`.`processlist_command`,
        `t`.`processlist_time`,
        `t`.`processlist_state`,
-       `t`.`processlist_info`,
-       `p`.`rows_sent`,
-       `p`.`rows_examined`
+       `t`.`processlist_info` # ,
+#        `p`.`rows_sent`,
+#        `p`.`rows_examined`
     FROM `performance_schema`.`threads`              `t`
         LEFT JOIN `information_schema`.`processlist` `p`
                       ON `t`.`processlist_id` = `p`.`id`
@@ -318,6 +318,7 @@ SELECT `r`.`trx_id`              AS `waiting_trx_id`,
                        ON `b`.`trx_id` = `w`.`blocking_trx_id`
         INNER JOIN `information_schema`.`innodb_trx` `r`
                        ON `r`.`trx_id` = `w`.`waiting_trx_id`;
+
 
 #查询出所有自定义的数据库对象，存储过程，函数，视图，触发器，定时器
 SELECT `db` AS `db_name`, `name` AS `object_name`, LOWER(`type`) AS `db_type`

@@ -1,0 +1,31 @@
+cat >/mdata/3307/my.cnf<<EOF
+[mysqld]
+basedir=/usr/local/mysql
+datadir=/mdata/3307/data
+socket=/mdata/3307/mysql.sock
+port=3307
+log-error=/mdata/3307/mysql-error.log
+log_bin=/mdata/3307/mysql-bin
+binlog_format=row
+skip-name-resolve
+server-id=7
+gtid-mode=on
+enforce-gtid-consistency=true
+log-slave-updates=1
+EOF
+
+cat >/mdata/3308/my.cnf<<EOF
+[mysqld]
+basedir=/usr/local/mysql80
+datadir=/mdata/3308/data
+port=3308
+socket=/mdata/3308/mysql.sock
+log-error=/mdata/3308/mysql-error.log
+log_bin=/mdata/3308/mysql-bin
+binlog_format=row
+skip-name-resolve
+server-id=8
+gtid-mode=on
+enforce-gtid-consistency=true
+log-replica-updates=1
+EOF

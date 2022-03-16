@@ -1,0 +1,369 @@
+if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+   set fileencodings=ucs-bom,utf-8,latin1
+endif
+
+set viminfo='20,\"50	" read/write a .viminfo file, don't store more
+			" than 50 lines of registers
+set history=50		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+  augroup redhat
+  autocmd!
+  " In text files, always limit the width of text to 78 characters
+  " autocmd BufRead *.txt set tw=78
+  " When editing a file, always jump to the last cursor position
+  autocmd BufReadPost *
+   if line("'\"") > 0 && line ("'\"") <= line("$") |
+     exe "normal! g'\"" |
+   endif
+  " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
+  autocmd BufNewFile,BufReadPre /media/*,/run/media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+  " start with spec file template
+  autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
+  augroup END
+endif
+
+if has("cscope") && filereadable("/usr/bin/cscope")
+   set csprg=/usr/bin/cscope
+   set csto=0
+   set cst
+   set nocsverb
+   " add any database in current directory
+   if filereadable("cscope.out")
+      cs add $PWD/cscope.out
+   " else add database pointed to by environment
+   elseif $CSCOPE_DB != ""
+      cs add $CSCOPE_DB
+   endif
+   set csverb
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+filetype plugin on
+
+if &term=="xterm"
+     set t_Co=8
+     set t_Sb=^[[4%dm
+     set t_Sf=^[[3%dm
+endif
+
+" Don't wake up system with blinking cursor:
+" http://www.linuxpowertop.org/known.php
+let &guicursor = &guicursor . ",a:blinkon0"
+
+
+source $VIMRUNTIME/vimrc_example.vim
+"source $VIMRUNTIME/mswin.vim
+"behave mswin
+
+"========================
+"  文件编码乱码配置文件
+"========================
+"设置文件的编码形式 utf8
+set encoding=utf-8
+set termencoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936,chinese
+
+"vim的菜单乱码解决
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+"vim提示信息乱码的解决
+language messages zh_CN.utf-8
+
+
+"保存.vimrc文件时自动重启加载，即让此文件立即生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
+"保留历史记录
+set history=500
+
+"显示输入的命令
+set showcmd
+
+"被分割窗口之间显示空白
+set fillchars=vert:/
+set fillchars=stl:/
+set fillchars=stlnc:/
+
+
+"===========================
+"代码设置
+"===========================
+"语法高亮
+"syntax enable          "打开语法高亮
+syntax on               "打开语法高亮
+set showmatch		"高亮显示括号匹配
+set smartindent         "智能对齐
+
+"set novisualbell	"不要闪烁
+
+"===========================
+"状态栏的设置
+"===========================
+"设置ruler会在右下角显示光标所在的行号和列号,不方便查看,改成设置状态栏显示内容
+set ruler
+
+"设置状态行显示的内容. %F: 显示当前文件的完整路径. %r: 如果readonly,会显示[RO]
+"%B: 显示光标下字符的编码值,十六进制. %l:光标所在的行号. %v:光标所在的虚拟列号.
+"%P: 显示当前内容在整个文件中的百分比. %H和%M是strftime()函数的参数,获取时间.
+set statusline=%F%r\ [HEX=%B][%l,%v,%P]\ %{strftime(\"%H:%M\")}
+"显示文件名：总行数，总的字符数
+"set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
+
+"显示行号
+set nu "等同于 set number
+
+"突出显示当前行
+set cursorline "等同于 set cul
+
+"突出显示当前列
+set cursorcolumn "等同于 set cuc
+
+" cterm 表示原生vim设置央视, 设置为NONE表示可以自定义设置
+" red（红），white（白），black（黑），green（绿），yellow（黄），blue（蓝），purple（紫），
+" gray（灰），brown（棕），tan(褐色)，syan(青色)
+" 更多高亮颜色设置, 可以:h highlight 查看manual
+highlight CursorLine   cterm=NONE ctermbg=darkred ctermfg=NONE guibg=NONE guifg=NONE
+highlight CursorColumn cterm=NONE ctermbg=darkred ctermfg=NONE guibg=NONE guifg=NONE
+
+"浅色显示非当前行
+"autocmd InsertLeave * se nocul
+
+"用浅色高亮当前行
+"autocmd InsertEnter * se cul
+
+set guicursor+=a:blinkon0 "设置光标不闪烁
+
+"允许折叠
+" set foldenable
+"""""""""""""""""设置折叠"""""""""""""""""""""
+"根据语法折叠
+" set fdm=syntax
+
+"手动折叠
+" set fdm=manual
+
+"设置键盘映射，通过空格设置折叠
+" nnoremap <space> @=((foldclosed(line('.')<0)?'zc':'zo'))<CR>
+""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"共享剪贴板  
+set clipboard+=unnamed 
+
+"从不备份  
+set nobackup
+
+"自动保存
+set autowrite
+
+"Toggle Menu and Toolbar 	"隐藏菜单栏和工具栏
+set showtabline=2 	"设置显示标签栏
+set autoread 		"设置当文件在外部被修改，自动更新该文件
+
+
+"隐藏工具栏
+"set guioptions-=T
+"隐藏菜单栏
+"set guioptions-=m
+
+ 
+"===========================
+"查找/替换相关的设置
+"===========================
+"高亮显示所有搜索到的内容.后面用map映射快捷键来方便关闭当前搜索的高亮.
+set hlsearch
+"光标立刻跳转到搜索到内容
+set incsearch
+
+"搜索到最后匹配的位置后,再次搜索不回到第一个匹配处
+"set nowrapscan
+
+"去掉输入错误时的提示声音
+set noeb
+
+" 默认按下Esc后,需要等待1秒才生效,设置Esc超时时间为100ms,尽快生效
+set ttimeout
+set ttimeoutlen=100
+
+"在处理未保存或只读文件的时候，弹出确认
+set confirm
+
+"让Backspace键可以往前删除字符.
+"Debian系统自带的vim版本会加载一个debian.vim文件,默认已经设置这一项,
+"可以正常使用Backspace键.如果使用自己编译的vim版本,并自行配置.vimrc文件,
+"可能就没有设置这一项,导致Backspace键用不了,或者时灵时不灵.所以主动配置.
+"使回格键（backspace）正常处理indent, eol, start等
+set backspace=indent,eol,start
+
+"允许backspace和光标键跨越行边界
+"set whichwrap+=<,>,h,l
+
+"去掉有关vi一致性模式,避免操作习惯上的局限.
+set nocompatible
+
+"FIXME 在MS-DOS控制台打开vim时,控制台使用鼠标右键来复制粘贴,设置
+"全鼠标模式,鼠标右键被映射为visual mode,不能用来复制粘贴,不方便.
+"但是如果不设置鼠标模式,会无法使用鼠标滚轮来滚动界面.经过验证,发现
+"可以设成普通模式mouse=n来使用鼠标滚轮,也能使用鼠标右键复制粘贴.
+" mouse=c/mouse=i模式都不能用鼠标滚轮. Linux下还是要设成 mouse=a
+set mouse=n
+"set selection=exclusive
+"set selectmode=mouse,key
+
+
+set go=				"不要图形按钮
+"设置Tab长度为4空格
+set tabstop=4
+"设置自动缩进长度为4空格
+set shiftwidth=4
+"自动缩进,这个导致从外面拷贝多行以空格开头的内容时,会有多的缩进,先不设置
+set autoindent
+"不要用空格代替制表符
+"set noexpandtab
+"输入tab制表符时，自动替换成空格
+set expandtab
+"设置softtabstop有一个好处是可以用Backspace键来一次删除4个空格.
+"softtabstop的值为负数,会使用shiftwidth的值,两者保持一致,方便统一缩进.
+set softtabstop=4
+set smarttab " 自动缩进
+set wrap 		"设置自动换行
+"set nowrap 		"设置不自动换行
+set linebreak 		"整词换行，与自动换行搭配使用
+set autochdir 		"自动设置当前目录为正在编辑的目录
+set listchars=tab:>-,trail:- "显示空格和tab键
+"set list 		"显示制表符
+set hidden 		"自动隐藏没有保存的缓冲区，切换buffer时不给出保存当前buffer的提示
+set scrolloff=5 	"在光标接近底端或顶端时，自动下滚或上滚
+set cindent     "c文件自动对齐
+
+"1=启动显示状态行, 2=总是显示状态行.设置总是显示状态行,方便看到当前文件名
+set laststatus=2
+
+"自动补全
+:inoremap ( ()<ESC>i
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {<CR>}<ESC>O
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+:inoremap " ""<ESC>i
+:inoremap ' ''<ESC>i
+function! ClosePair(char)
+    if getline('.')[col('.') - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char
+    endif
+endfunction 
+"打开文件类型检测,并载入文件类型插件,为特定文件类型载入相关缩进文
+filetype plugin indent on
+" 设置自动补全的选项. longest表示只自动补全最大匹配的部分,剩余部分通过
+" CTRL-P/CTRL-N来选择匹配项进行补全. menu表示弹出可补全的内容列表.
+" 如果有多个匹配,longest选项不会自动选中并完整补全,要多按一次CTRL-P,比较
+" 麻烦,不做设置,保持默认设置,vim默认没有设置longest.
+"set completeopt=longest,menu "启用这句才会开启自动补全
+
+
+"设置背景主题 
+"color asmanian2
+
+"设置字体
+"set guifont=Courier_New:h10:cANSI
+
+"设置颜色主题,适用于黑色背景.
+colorscheme desert	"配色方案
+
+"=============显示中文帮助
+if version >= 603
+    set helplang=cn
+    set encoding=utf-8
+endif
+
+
+
+
+" 关闭NERDTree快捷键
+map <leader>t :NERDTreeToggle<CR>
+" 显示行号
+let NERDTreeShowLineNumbers=1
+let NERDTreeAutoCenter=1
+" 是否显示隐藏文件
+let NERDTreeShowHidden=1
+" 设置宽度
+let NERDTreeWinSize=21
+" 在终端启动vim时，共享NERDTree
+let g:nerdtree_tabs_open_on_console_startup=1
+" 忽略一下文件的显示
+let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+" 显示书签列表
+let NERDTreeShowBookmarks=1
+
+inoremap { {}<ESC>i 
+hi MatchParen ctermbg=DarkRed guibg=lightblue  
+
+
+
+
+"=============新建.c,.h,.sh,.java文件，自动插入文件头 
+autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
+""定义函数SetTitle，自动插入文件头 
+func SetTitle() 
+    "如果文件类型为.sh文件 
+    if &filetype == 'sh' 
+        call setline(1,"\#!/bin/bash")
+        call append(line("."),"\############################") 
+        call append(line(".")+1, "\# File Name: ".expand("%")) 
+        call append(line(".")+2, "\# Author: Laifengting") 
+        call append(line(".")+3, "\# mail: 396096473@qq.com") 
+        call append(line(".")+4, "\# Created Time: ".strftime("%c"))
+        call append(line(".")+5, "\############################") 
+        call append(line(".")+6, "") 
+    else 
+        call setline(1, "/******************************") 
+        call append(line("."), "    > File Name: ".expand("%")) 
+        call append(line(".")+1, "    > Author:Laifengting") 
+        call append(line(".")+2, "    > Mail: 396096473@qq.com ") 
+        call append(line(".")+3, "    > Created Time: ".strftime("%c")) 
+        call append(line(".")+4, " *****************************/") 
+        call append(line(".")+5, "")
+    endif
+
+    "新建文件后，自动定位到文件末尾
+    autocmd BufNewFile * normal G
+endfunc
+
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
