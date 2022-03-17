@@ -1403,3 +1403,137 @@ SELECT `b`.`processlist_id`                   AS `waiting_pid`,
                        ON `r`.`thread_id` = `s`.`thread_id`;
 
 
+#### 反范式优化
+## 创建库
+CREATE DATABASE `lft`;
+## 使用库
+USE `lft`;
+## 创建学生表
+CREATE TABLE `student` (
+    `stu_id`      INT PRIMARY KEY AUTO_INCREMENT,
+    `stu_name`    VARCHAR(25),
+    `create_time` DATETIME);
+## 课程评论表
+CREATE TABLE `class_comment` (
+    `comment_id`   INT PRIMARY KEY AUTO_INCREMENT,
+    `class_id`     INT,
+    `comment_text` VARCHAR(35),
+    `comment_time` DATETIME,
+    `stu_id`       INT);
+## 创建存储过程向学生表中添加数据
+DELIMITER //
+CREATE PROCEDURE `batch_insert_student`(IN `start` INT(10), IN `max_num` INT(10))
+BEGIN
+    DECLARE `i` INT DEFAULT 0;
+    DECLARE `date_start` DATETIME DEFAULT ('2017-01-01 00:00:00');
+    DECLARE `date_temp` DATETIME;
+    SET `date_temp` = `date_start`;
+    SET AUTOCOMMIT = 0;
+    REPEAT
+        SET `i` = `i` + 1;
+        SET `date_temp` = DATE_ADD(`date_temp`, INTERVAL RAND() * 60 SECOND);
+        INSERT INTO `student`(`stu_id`, `stu_name`, `create_time`)
+            VALUES
+                ((`start` + `i`), CONCAT('stu_', `i`), `date_temp`);
+    UNTIL `i` = `max_num`
+        END REPEAT;
+    COMMIT;
+END //
+DELIMITER ;
+
+## 调用存储过程，学生id 从10001
+CALL `batch_insert_student`(10000, 1000000);
+
+## 创建存储过程向学生评论表中添加数据
+DELIMITER //
+CREATE PROCEDURE `batch_insert_class_comments`(IN `start` INT(10), IN `max_num` INT(10))
+BEGIN
+    DECLARE `i` INT DEFAULT 0;
+    DECLARE `date_start` DATETIME DEFAULT ('2018-01-01 00:00:00');
+    DECLARE `date_temp` DATETIME;
+    DECLARE `comment_text` VARCHAR(25);
+    DECLARE `stu_id` INT;
+    SET `date_temp` = `date_start`;
+    SET AUTOCOMMIT = 0;
+    REPEAT
+        SET `i` = `i` + 1;
+        SET `date_temp` = DATE_ADD(`date_temp`, INTERVAL RAND() * 60 SECOND);
+        SET `comment_text` = SUBSTR(MD5(RAND()), 1, 20);
+        SET `stu_id` = FLOOR(RAND() * 100000);
+        INSERT INTO `class_comment`(`comment_id`, `class_id`, `comment_text`, `comment_time`, `stu_id`)
+            VALUES
+                ((`start` + `i`), 10001, `comment_text`, `date_temp`, `stu_id`);
+    UNTIL `i` = `max_num`
+        END REPEAT;
+    COMMIT;
+END //
+DELIMITER ;
+
+## 调用存储过程 学生id 从10001
+CALL `batch_insert_class_comments`(10000, 1000000);
+
+## 查看源代码下学生表的数量
+SELECT COUNT(*)
+    FROM `student`;
+
+SELECT *
+    FROM `student`
+    LIMIT 1;
+
+SELECT *
+    FROM `class_comment`
+    LIMIT 100;
+
+# 查询出每个学生的评论内容，时间，学生名字，使用外连接
+SELECT SQL_NO_CACHE `cc`.`comment_text`, `cc`.`comment_time`, `s`.`stu_name`
+    FROM `lft`.`class_comment`    `cc`
+        LEFT JOIN `lft`.`student` `s`
+                      ON `s`.`stu_id` = `cc`.`stu_id`
+    WHERE `cc`.`class_id` = 10001
+    ORDER BY `cc`.`comment_id` DESC
+    LIMIT 100000;
+
+# 反范式表创建
+CREATE TABLE `class_comment1` AS
+    SELECT *
+        FROM `class_comment`;
+
+# 添加索引
+ALTER TABLE `class_comment1`
+    ADD PRIMARY KEY (`comment_id`);
+
+# 查看索引
+SHOW INDEX FROM `class_comment1`;
+
+# 添加列
+ALTER TABLE `class_comment1`
+    ADD `stu_name` VARCHAR(25);
+
+# 修改数据
+UPDATE `class_comment1` `c`
+SET `c`.`stu_name` = (
+                     SELECT `s`.`stu_name`
+                         FROM `student` `s`
+                         WHERE `c`.`stu_id` = `s`.`stu_id`);
+
+# 查询同样需求
+SELECT SQL_NO_CACHE `comment_text`, `comment_time`, `stu_name`
+    FROM `class_comment1`
+    WHERE `class_id` = 10001
+    ORDER BY `comment_id` DESC
+    LIMIT 100000;
+
+
+# 创建视图
+CREATE VIEW `com_txt_time_stu` AS
+    SELECT SQL_NO_CACHE `cc`.`comment_text`, `cc`.`comment_time`, `s`.`stu_name`
+        FROM `lft`.`class_comment`    `cc`
+            LEFT JOIN `lft`.`student` `s`
+                          ON `s`.`stu_id` = `cc`.`stu_id`
+        WHERE `cc`.`class_id` = 10001
+        ORDER BY `cc`.`comment_id` DESC
+        LIMIT 100000;
+
+# 走视图中查询
+SELECT *
+    FROM `com_txt_time_stu`;
