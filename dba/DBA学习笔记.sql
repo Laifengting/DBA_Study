@@ -1480,6 +1480,9 @@ SELECT *
     FROM `student`
     LIMIT 1;
 
+SELECT COUNT(*)
+    FROM `class_comment`;
+
 SELECT *
     FROM `class_comment`
     LIMIT 100;
