@@ -1,4 +1,4 @@
-# ²éÑ¯³ö´ó±í
+# æŸ¥è¯¢å‡ºå¤§è¡¨
 SELECT `table_schema`,
        `table_name`,
        ROUND(SUM(`data_length` + `index_length`) / 1024 / 1024 / 1024, 1) AS `data_size_gb`,

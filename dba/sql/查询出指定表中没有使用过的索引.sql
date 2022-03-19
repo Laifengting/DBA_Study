@@ -1,4 +1,4 @@
-# ²éÑ¯³öÖ¸¶¨±íÖÐÃ»ÓÐÊ¹ÓÃ¹ýµÄË÷Òý
+# æŸ¥è¯¢å‡ºæŒ‡å®šè¡¨ä¸­æ²¡æœ‰ä½¿ç”¨è¿‡çš„ç´¢å¼•
 SELECT *
     FROM `sys`.`schema_unused_indexes`
     WHERE `object_schema` NOT IN ('mysql', 'information_schema', 'performance_schema', 'sys')

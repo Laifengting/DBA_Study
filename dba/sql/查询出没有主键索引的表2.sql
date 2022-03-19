@@ -1,4 +1,4 @@
-# ²éÑ¯³öÃ»ÓÐÖ÷¼üË÷ÒýµÄ±í
+# æŸ¥è¯¢å‡ºæ²¡æœ‰ä¸»é”®ç´¢å¼•çš„è¡¨
 SELECT `table_schema`, `table_name`
     FROM (
          SELECT `c`.`table_schema`, `c`.`table_name`, CASE WHEN `column_key` = 'PRI' THEN 1 ELSE 0 END AS `pk_flag`

@@ -1,4 +1,4 @@
-#### 查询出字符集不是 utf8mb4 的定义义的表（优化）
+#### 鏌ヨ鍑哄瓧绗﹂泦涓嶆槸 utf8mb4 鐨勫畾涔変箟鐨勮〃锛堜紭鍖栵級
 SELECT CONCAT(`table_schema`, '.', `table_name`)   AS `tbl_name`,
        `character_set_name`,
        GROUP_CONCAT(`column_name` SEPARATOR ' : ') AS `column_list`

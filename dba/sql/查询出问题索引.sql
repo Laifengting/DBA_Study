@@ -1,5 +1,5 @@
-# 找出可能创建的索引是问题索引
-# information_schema.STATISTICS.CARDINALITY / information_schema.TABLES.TABLE_ROWS < 10% 的可以认为是问题索引
+# 鎵惧嚭鍙兘鍒涘缓鐨勭储寮曟槸闂绱㈠紩
+# information_schema.STATISTICS.CARDINALITY / information_schema.TABLES.TABLE_ROWS < 10% 鐨勫彲浠ヨ涓烘槸闂绱㈠紩
 SELECT CONCAT(`s`.`table_schema`, '.', `s`.`table_name`) AS `tbl_name`,
        `s`.`index_name`,
        `s`.`cardinality`,

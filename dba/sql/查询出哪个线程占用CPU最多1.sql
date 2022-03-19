@@ -1,4 +1,4 @@
-# ����ϵͳ���ĸ��߳�ռ��CPU��ࡣ��ִ�е�ʲô���
+# 检查出系统中哪个线程占用CPU最多。是执行的什么语句
 SELECT `t`.`name`,
        `t`.`type`,
        `t`.`thread_os_id`,

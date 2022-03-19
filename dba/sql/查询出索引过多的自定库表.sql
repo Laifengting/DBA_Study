@@ -1,4 +1,4 @@
-# 查询出索引过多的自定库表
+# 鏌ヨ鍑虹储寮曡繃澶氱殑鑷畾搴撹〃
 SELECT `database_name`, `table_name`, COUNT(*)
     FROM `mysql`.`innodb_index_stats`
     WHERE `database_name` NOT IN ('information_schema', 'performance_schema', 'mysql', 'sys')

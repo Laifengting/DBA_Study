@@ -1,4 +1,4 @@
-## 查看所有线程的所在会话的隔离级别
+## 鏌ョ湅鎵�鏈夌嚎绋嬬殑鎵�鍦ㄤ細璇濈殑闅旂绾у埆
 SELECT `vbt`.`thread_id`,
        `vbt`.`variable_name`,
        `vbt`.`variable_value`,

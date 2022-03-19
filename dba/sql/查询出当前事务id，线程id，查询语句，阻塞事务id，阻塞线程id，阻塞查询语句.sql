@@ -1,4 +1,4 @@
-# 检查出当前事务id,线程id,查询语句，阻塞事务id,阻塞线程id,阻塞查询语句
+# 妫�鏌ュ嚭褰撳墠浜嬪姟id,绾跨▼id,鏌ヨ璇彞锛岄樆濉炰簨鍔d,闃诲绾跨▼id,闃诲鏌ヨ璇彞
 SELECT `r`.`trx_id`              AS `waiting_trx_id`,
        `r`.`trx_mysql_thread_id` AS `waiting_thread`,
        `r`.`trx_query`           AS `waiting_query`,

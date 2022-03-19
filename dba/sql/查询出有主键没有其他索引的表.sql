@@ -1,4 +1,4 @@
-# 查询出有主键没有其他索引的表
+# 鏌ヨ鍑烘湁涓婚敭娌℃湁鍏朵粬绱㈠紩鐨勮〃
 SELECT `t`.`table_schema`, `t`.`table_name`, `t`.`table_type`, `s`.`index_name`, `s`.`index_type`
     FROM `information_schema`.`tables`              `t`
         LEFT JOIN `information_schema`.`statistics` `s`

@@ -1,4 +1,4 @@
-# ²éÑ¯³ö×ÔÔöid½Ï´óµÄ¿â±í
+# æŸ¥è¯¢å‡ºè‡ªå¢židè¾ƒå¤§çš„åº“è¡¨
 SELECT `tbl`.`table_schema`, `tbl`.`table_name`, `tbl`.`auto_increment`, `col`.`column_type`
     FROM `information_schema`.`tables`      `tbl`
         JOIN `information_schema`.`columns` `col`

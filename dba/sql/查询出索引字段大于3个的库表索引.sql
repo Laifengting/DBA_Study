@@ -1,4 +1,4 @@
-# Ë÷Òý×Ö¶Î¹ý¶à(¶àÓÚ3¸ö)
+# ç´¢å¼•å­—æ®µè¿‡å¤š(å¤šäºŽ3ä¸ª)
 SELECT `database_name`, `table_name`, `index_name`, COUNT(*)
     FROM `mysql`.`innodb_index_stats`
     WHERE `database_name` NOT IN ('information_schema', 'performance_schema', 'mysql', 'sys')

@@ -1,4 +1,4 @@
-# ²éÑ¯³öÃ»ÓÐÈÎºÎË÷ÒýµÄ±í
+# æŸ¥è¯¢å‡ºæ²¡æœ‰ä»»ä½•ç´¢å¼•çš„è¡¨
 SELECT `t`.`table_schema`, `t`.`table_name`, `t`.`table_type`, `s`.`index_name`, `s`.`index_type`
     FROM `information_schema`.`tables`              `t`
         LEFT JOIN `information_schema`.`statistics` `s`

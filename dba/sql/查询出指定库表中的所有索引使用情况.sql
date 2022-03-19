@@ -1,4 +1,4 @@
-# ²éÑ¯³öÖ¸¶¨¿âºÍÖ¸¶¨±íÖĞµÄËùÓĞË÷ÒıÊ¹ÓÃÇé¿ö
+# æŸ¥è¯¢å‡ºæŒ‡å®šåº“å’ŒæŒ‡å®šè¡¨ä¸­çš„æ‰€æœ‰ç´¢å¼•ä½¿ç”¨æƒ…å†µ
 SELECT *
     FROM `sys`.`schema_index_statistics`
     WHERE `table_schema` NOT IN ('mysql', 'information_schema', 'performance_schema', 'sys')

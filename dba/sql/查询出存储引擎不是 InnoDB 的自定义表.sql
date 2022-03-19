@@ -1,4 +1,4 @@
-#### ²éÑ¯³ö´æ´¢ÒıÇæ²»ÊÇ Innodb µÄ×Ô¶¨ÒåµÄ±í
+#### æŸ¥è¯¢å‡ºå­˜å‚¨å¼•æ“ä¸æ˜¯ Innodb çš„è‡ªå®šä¹‰çš„è¡¨
 SELECT `table_schema`, `table_name`, `engine`, `sys`.`format_bytes`(`data_length`) AS `data_size`
     FROM `information_schema`.`tables`
     WHERE `engine` <> 'InnoDB'

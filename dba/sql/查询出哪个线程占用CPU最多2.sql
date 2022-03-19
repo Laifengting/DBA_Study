@@ -1,4 +1,4 @@
-# sys.session ����Ҳ�ܿ������� # ����ϵͳ���ĸ��߳�ռ��CPU��ࡣ��ִ�е�ʲô���
+# sys.session 表中也能看到部分 # 检查出系统中哪个线程占用CPU最多。是执行的什么语句
 SELECT `s`.`thd_id`,
        `s`.`conn_id`,
        `s`.`user`,
